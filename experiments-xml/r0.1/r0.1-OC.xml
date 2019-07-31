@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
 <experiments>
-    <experiment name="r0.1" repetitions="2" runMetricsEveryStep="true">
+    <experiment name="r0.1" repetitions="1" runMetricsEveryStep="true">
         <setup>setup</setup>
         <go>go</go>
         <final>show (word "Time elapsed:" timer)
         dump-networks
         </final>
         <!-- assuming 40 years  -->
-        <timeLimit steps="12"/>
+        <timeLimit steps="20"/>
         <!-- 1. Number of OC members per time unit (tentatively month) -->
         <metric>o1</metric>
         <!-- 2. Number of recruited individuals into OC per time unit -->
@@ -128,7 +128,7 @@
           <value value="8"/>
         </enumeratedValueSet>
         <enumeratedValueSet variable="num-persons">
-          <value value="1000"/>
+          <value value="10000"/>
         </enumeratedValueSet>    
         <enumeratedValueSet variable="welfare-support">
           <value value="&quot;none&quot;"/> <!-- overriden by intervention -->
