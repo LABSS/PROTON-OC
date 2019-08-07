@@ -5,6 +5,8 @@ end
 
 to-report o2
   ; Number of recruited individuals into OC per time unit
+  show "callin o2"
+  set calls-in-setup calls-in-setup + 1
   report count all-persons with [ new-recruit = (ticks - 1) ]
 end
 
@@ -56,11 +58,15 @@ to-report o5a
 end
 
 to-report o6
+  show "callin o6"
+  set calls-in-setup calls-in-setup + 1
   ; Distribution of R (which is the individual embededdness into OC-prone local networks)
   report make-histo [ -> oc-embeddedness ] 7 0 1
 end
 
 to-report o6a
+  show "callin o6a"
+  set calls-in-setup calls-in-setup + 1
   ; average of R (which is the individual embededdness into OC-prone local networks)
   report mean [ oc-embeddedness ] of all-persons
 end
