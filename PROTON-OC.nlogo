@@ -148,6 +148,7 @@ globals [
   people-jailed
   number-crimes
   crime-multiplier
+  calls-in-setup
 ]
 
 to profile-setup
@@ -253,6 +254,7 @@ to setup
   ask persons [set hobby random 5] ; hobby is used only in wedding procedure to compute wedding sim.
   set removed-fatherships []
   update-plots
+  show word "calls in setup: " calls-in-setup
 end
 
 to setup-facilitators
@@ -384,6 +386,7 @@ to-report wedding-proximity-with [ p-partner ]
 end
 
 to go
+  set calls-in-setup 0
   ask all-persons [
     set age calculate-age
     set num-crimes-committed-this-tick 0
@@ -447,6 +450,7 @@ to go
   if behaviorspace-experiment-name != "" [
     show (word behaviorspace-run-number "." ticks)
   ]
+  show word "calls in go: " calls-in-setup
 end
 
 to-report intervention-on?
