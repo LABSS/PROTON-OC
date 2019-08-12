@@ -120,7 +120,7 @@ def saveExperimentToXMLFile(experiment, xmlfile):
        File opened for writing.
     """
 
-    xmlfile.write("""<?xml version="1.0" encoding="us-ascii"?>\n""")
+    xmlfile.write("""<?xml version="1.0" encoding="UTF-8"?>\n""")
     xmlfile.write("""<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">\n""")
     xmlfile.write("""<experiments>\n""")
     experiment.writexml(xmlfile)
