@@ -201,6 +201,7 @@ to setup
   reset-ticks ; so age can be computed
   reset-timer
   set initial-random-seed random 4294967295 - 2147483648
+  set initial-random-seed 1
   random-seed initial-random-seed
   load-stats-tables
   set facilitator-fails 0
@@ -1400,7 +1401,7 @@ to calc-degree-correction-for-bosses
     let to-sum []
     ask gang [
       let n count person-link-neighbors with [ oc-member? ]
-      set to-sum lput (n ^ 2 / (n + 1) ^ 2) to-sum
+      set to-sum lput ((n  / (n + 1)) ^ 2) to-sum
     ]
     ; if the OC network is disconnected, the correction isn't needed - I use 1 but it will be multiplied by zero anyway
     set degree-correction-for-bosses ifelse-value (sum to-sum = 0) [ arrest-rate ] [ arrest-rate / mean to-sum ]
