@@ -1,9 +1,8 @@
 <experiments>
-  <experiment name="rp0.6p" repetitions="6" runMetricsEveryStep="true">
+  <experiment name="rp0.63pmorearr" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
   <go>go</go>
   <final>show (word "Time elapsed:" timer)
-        dump-networks
         </final>
   <timeLimit steps="360" />
   <metric>o1</metric>
@@ -64,10 +63,8 @@
   <metric>mean [ count link-neighbors ] of all-persons with [oc-member?]</metric>
   <metric>mean [ count link-neighbors ] of all-persons</metric>
   <enumeratedValueSet variable="intervention">
-      <value value="&quot;baseline&quot;" />
-    <value value="&quot;facilitators&quot;" />
-    <value value="&quot;disruptive&quot;" />
-    <value value="&quot;preventive&quot;" />
+    <value value="&quot;students-weak&quot;"/>
+    <value value="&quot;students-medium&quot;"/>    
     </enumeratedValueSet>
   <enumeratedValueSet variable="num-oc-persons">
       <value value="100" />

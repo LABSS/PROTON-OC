@@ -1,9 +1,8 @@
 <experiments>
-  <experiment name="rp0.4a" repetitions="6" runMetricsEveryStep="true">
+  <experiment name="rp0.6emorearr" repetitions="5" runMetricsEveryStep="true">
     <setup>setup</setup>
   <go>go</go>
   <final>show (word "Time elapsed:" timer)
-        dump-networks
         </final>
   <timeLimit steps="360" />
   <metric>o1</metric>
@@ -61,19 +60,24 @@
   <metric>count all-persons with [ my-school != nobody ]</metric>
   <metric>count all-persons with [ my-job != nobody ]</metric>
   <metric>kids-intervention-counter</metric>
+  <metric>mean [ count link-neighbors ] of all-persons with [oc-member?]</metric>
+  <metric>mean [ count link-neighbors ] of all-persons</metric>
   <enumeratedValueSet variable="intervention">
-      <value value="&quot;baseline&quot;" />
+    <value value="&quot;baseline&quot;" />
+    <value value="&quot;facilitators&quot;" />
     <value value="&quot;disruptive&quot;" />
     <value value="&quot;preventive&quot;" />
+    <value value="&quot;students-weak&quot;"/>
+    <value value="&quot;students-medium&quot;"/>
     </enumeratedValueSet>
   <enumeratedValueSet variable="num-oc-persons">
-      <value value="30" />
+      <value value="50" />
     </enumeratedValueSet>
   <enumeratedValueSet variable="data-folder">
-      <value value="&quot;inputs/palermo/data/&quot;" />
+      <value value="&quot;inputs/eindhoven/data/&quot;" />
     </enumeratedValueSet>
   <enumeratedValueSet variable="number-crimes-yearly-per10k">
-      <value value="2000" />
+      <value value="3368" />
     </enumeratedValueSet>
   <enumeratedValueSet variable="unemployment-multiplier">
       <value value="&quot;base&quot;" />
@@ -82,16 +86,16 @@
       <value value="1" />
     </enumeratedValueSet>
   <enumeratedValueSet variable="number-arrests-per-year">
-      <value value="30" />
+      <value value="150" />
     </enumeratedValueSet>
   <enumeratedValueSet variable="punishment-length">
       <value value="1.0" />
     </enumeratedValueSet>
   <enumeratedValueSet variable="num-oc-families">
-      <value value="8" />
+      <value value="10" />
     </enumeratedValueSet>
   <enumeratedValueSet variable="num-persons">
-      <value value="10000" />
+      <value value="3000" />
     </enumeratedValueSet>
   <enumeratedValueSet variable="welfare-support">
       <value value="&quot;none&quot;" />

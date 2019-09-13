@@ -808,7 +808,29 @@ to choose-intervention-setting
     set intervention-start 13
     set intervention-end 9999
   ]
-    if intervention = "facilitators" [
+  if intervention = "students-weak" [
+    set family-intervention "none"
+    set social-support "all"
+    set welfare-support "none"
+    set OC-boss-repression? false
+    set facilitator-repression? false
+    set targets-addressed-percent 10
+    set ticks-between-intervention 12
+    set intervention-start 13
+    set intervention-end 9999
+  ]
+    if intervention = "students-medium" [
+    set family-intervention "none"
+    set social-support "all"
+    set welfare-support "none"
+    set OC-boss-repression? false
+    set facilitator-repression? false
+    set targets-addressed-percent 25
+    set ticks-between-intervention 12
+    set intervention-start 13
+    set intervention-end 9999
+  ]
+  if intervention = "facilitators" [
     set family-intervention "none"
     set social-support "none"
     set welfare-support "none"
@@ -2225,7 +2247,7 @@ CHOOSER
 social-support
 social-support
 "none" "educational" "psychological" "more friends" "all"
-4
+0
 
 CHOOSER
 15
@@ -2246,7 +2268,7 @@ targets-addressed-percent
 targets-addressed-percent
 0
 100
-100.0
+10.0
 1
 1
 NIL
@@ -2261,7 +2283,7 @@ ticks-between-intervention
 ticks-between-intervention
 1
 24
-1.0
+12.0
 1
 1
 NIL
@@ -2430,8 +2452,8 @@ CHOOSER
 750
 intervention
 intervention
-"use current values" "baseline" "preventive" "disruptive" "students" "facilitators"
-4
+"use current values" "baseline" "preventive" "disruptive" "students" "students-weak" "students-medium" "facilitators"
+0
 
 MONITOR
 268
