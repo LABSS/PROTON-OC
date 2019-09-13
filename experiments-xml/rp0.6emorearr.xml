@@ -1,5 +1,5 @@
 <experiments>
-  <experiment name="rp0.6e" repetitions="6" runMetricsEveryStep="true">
+  <experiment name="rp0.6emorearr" repetitions="6" runMetricsEveryStep="true">
     <setup>setup</setup>
   <go>go</go>
   <final>show (word "Time elapsed:" timer)
@@ -66,7 +66,6 @@
   <enumeratedValueSet variable="intervention">
       <value value="&quot;baseline&quot;" />
     <value value="&quot;facilitators&quot;" />
-    <value value="&quot;students&quot;" />
     <value value="&quot;disruptive&quot;" />
     <value value="&quot;preventive&quot;" />
     </enumeratedValueSet>
