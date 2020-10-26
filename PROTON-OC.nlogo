@@ -436,9 +436,9 @@ to go
     output (word listname ": " count links with [ breed = runresult listname ])
   ]
   output "------------------"
-  if behaviorspace-experiment-name != "" [
-    show (word behaviorspace-run-number "." ticks " t:" timer )
-  ]
+;  if behaviorspace-experiment-name != "" [
+;    show (word behaviorspace-run-number "." ticks " t:" timer )
+;  ]
   tick
 end
 
@@ -1820,7 +1820,7 @@ num-persons
 num-persons
 100
 10000
-500.0
+250.0
 100
 1
 NIL
@@ -1965,7 +1965,7 @@ number-arrests-per-year
 number-arrests-per-year
 0
 100
-30.0
+10.0
 5
 1
 NIL
@@ -2091,7 +2091,7 @@ num-oc-families
 num-oc-families
 1
 50
-8.0
+10.0
 1
 1
 NIL
@@ -2240,7 +2240,7 @@ percentage-of-facilitators
 percentage-of-facilitators
 0
 0.01
-0.005
+0.01
 0.001
 1
 NIL
@@ -2343,7 +2343,7 @@ CHOOSER
 intervention
 intervention
 "use current values" "baseline" "preventive" "disruptive" "students" "facilitators" "preventive-strong" "disruptive-strong" "students-strong" "facilitators-strong"
-1
+9
 
 MONITOR
 810
@@ -2433,7 +2433,7 @@ CHOOSER
 unemployment-multiplier
 unemployment-multiplier
 "base" 0.5 1.5 0.410067526089626 0.205033763044813 0.615101289134438
-3
+0
 
 MONITOR
 540
@@ -2477,7 +2477,7 @@ number-crimes-yearly-per10k
 number-crimes-yearly-per10k
 0
 3000
-2000.0
+100.0
 100
 1
 NIL
@@ -2522,7 +2522,7 @@ SWITCH
 443
 facilitator-repression?
 facilitator-repression?
-1
+0
 1
 -1000
 
@@ -2535,7 +2535,7 @@ facilitator-repression-multiplier
 facilitator-repression-multiplier
 1
 5
-2.0
+20.0
 0.1
 1
 NIL
@@ -2979,6 +2979,76 @@ NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="5" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="420"/>
+    <metric>mean [ criminal-tendency ] of all-persons</metric>
+    <metric>count all-persons with [oc-member?]</metric>
+    <metric>mean [education-level] of all-persons</metric>
+    <enumeratedValueSet variable="num-persons">
+      <value value="250"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="intervention">
+      <value value="&quot;preventive&quot;"/>
+      <value value="&quot;disruptive&quot;"/>
+      <value value="&quot;students&quot;"/>
+      <value value="&quot;facilitators&quot;"/>
+      <value value="&quot;preventive-strong&quot;"/>
+      <value value="&quot;disruptive-strong&quot;"/>
+      <value value="&quot;students-strong&quot;"/>
+      <value value="&quot;facilitators-strong&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="education-rate">
+      <value value="0.01"/>
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="facilitator-repression-multiplier">
+      <value value="1"/>
+      <value value="2.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-accomplice-radius">
+      <value value="1"/>
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="number-arrests-per-year">
+      <value value="5"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="number-crimes-yearly-per10k">
+      <value value="5"/>
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-oc-families">
+      <value value="1"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-oc-persons">
+      <value value="1"/>
+      <value value="30"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="oc-embeddedness-radius">
+      <value value="1"/>
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percentage-of-facilitators">
+      <value value="0.005"/>
+      <value value="0.01"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="punishment-length">
+      <value value="0.5"/>
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="retirement-age">
+      <value value="65"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="threshold-use-facilitators">
+      <value value="1"/>
+      <value value="4"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
