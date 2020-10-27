@@ -1820,7 +1820,7 @@ num-persons
 num-persons
 100
 10000
-250.0
+500.0
 100
 1
 NIL
@@ -1920,7 +1920,7 @@ max-accomplice-radius
 max-accomplice-radius
 1
 4
-2.0
+4.0
 1
 1
 NIL
@@ -1935,7 +1935,7 @@ oc-embeddedness-radius
 oc-embeddedness-radius
 1
 4
-2.0
+5.0
 1
 1
 NIL
@@ -1965,7 +1965,7 @@ number-arrests-per-year
 number-arrests-per-year
 0
 100
-10.0
+5.0
 5
 1
 NIL
@@ -2076,7 +2076,7 @@ num-oc-persons
 num-oc-persons
 2
 200
-30.0
+100.0
 1
 1
 NIL
@@ -2186,7 +2186,7 @@ SWITCH
 373
 OC-members-scrutinize?
 OC-members-scrutinize?
-1
+0
 1
 -1000
 
@@ -2240,7 +2240,7 @@ percentage-of-facilitators
 percentage-of-facilitators
 0
 0.01
-0.01
+0.005
 0.001
 1
 NIL
@@ -2314,7 +2314,7 @@ education-rate
 education-rate
 0
 2
-1.0
+0.05
 0.01
 1
 NIL
@@ -2559,7 +2559,7 @@ SWITCH
 608
 constant-population?
 constant-population?
-1
+0
 1
 -1000
 
@@ -2980,17 +2980,21 @@ NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="experiment" repetitions="5" runMetricsEveryStep="false">
+  <experiment name="experiment" repetitions="25" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="420"/>
     <metric>mean [ criminal-tendency ] of all-persons</metric>
     <metric>count all-persons with [oc-member?]</metric>
     <metric>mean [education-level] of all-persons</metric>
+    <metric>number-born</metric>
+    <metric>count persons with [ my-job != nobody ]</metric>
+    <metric>count all-persons</metric>
     <enumeratedValueSet variable="num-persons">
-      <value value="250"/>
+      <value value="500"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="intervention">
+      <value value="&quot;baseline&quot;"/>
       <value value="&quot;preventive&quot;"/>
       <value value="&quot;disruptive&quot;"/>
       <value value="&quot;students&quot;"/>
@@ -3001,43 +3005,33 @@ NetLogo 6.1.1
       <value value="&quot;facilitators-strong&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="education-rate">
-      <value value="0.01"/>
-      <value value="1"/>
+      <value value="0.05"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="facilitator-repression-multiplier">
       <value value="1"/>
-      <value value="2.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="max-accomplice-radius">
-      <value value="1"/>
-      <value value="2"/>
+      <value value="4"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="number-arrests-per-year">
       <value value="5"/>
-      <value value="10"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="number-crimes-yearly-per10k">
-      <value value="5"/>
       <value value="100"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="num-oc-families">
-      <value value="1"/>
       <value value="10"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="num-oc-persons">
-      <value value="1"/>
-      <value value="30"/>
+      <value value="100"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="oc-embeddedness-radius">
-      <value value="1"/>
-      <value value="2"/>
+      <value value="5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="percentage-of-facilitators">
       <value value="0.005"/>
-      <value value="0.01"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="punishment-length">
-      <value value="0.5"/>
       <value value="1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="retirement-age">
@@ -3046,6 +3040,9 @@ NetLogo 6.1.1
     <enumeratedValueSet variable="threshold-use-facilitators">
       <value value="1"/>
       <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="constant-population?">
+      <value value="true"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
