@@ -2928,6 +2928,96 @@ NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="branch_results_collect" repetitions="30" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="400"/>
+    <metric>o1</metric>
+    <metric>o2</metric>
+    <metric>o3</metric>
+    <metric>o4</metric>
+    <metric>o5</metric>
+    <metric>o5a</metric>
+    <metric>o6</metric>
+    <metric>o6a</metric>
+    <metric>o7a</metric>
+    <metric>o7b</metric>
+    <metric>o7c</metric>
+    <metric>o8a</metric>
+    <metric>o8b</metric>
+    <metric>o8c</metric>
+    <metric>o9a</metric>
+    <metric>o9b</metric>
+    <metric>o10a</metric>
+    <metric>o10b</metric>
+    <metric>o10c</metric>
+    <metric>o11</metric>
+    <metric>o12</metric>
+    <metric>o13</metric>
+    <metric>o14</metric>
+    <metric>o15</metric>
+    <metric>o16</metric>
+    <enumeratedValueSet variable="intervention">
+      <value value="&quot;baseline&quot;"/>
+      <value value="&quot;preventive&quot;"/>
+      <value value="&quot;disruptive&quot;"/>
+      <value value="&quot;students&quot;"/>
+      <value value="&quot;facilitators&quot;"/>
+      <value value="&quot;preventive-strong&quot;"/>
+      <value value="&quot;disruptive-strong&quot;"/>
+      <value value="&quot;students-strong&quot;"/>
+      <value value="&quot;facilitators-strong&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="constant-population?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="migration-on?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="output?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="education-rate">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="welfare-support">
+      <value value="&quot;none&quot;"/>
+      <value value="&quot;job-mother&quot;"/>
+      <value value="&quot;job-child&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="facilitator-repression-multiplier">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-accomplice-radius">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="oc-embeddedness-radius">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="number-arrests-per-year">
+      <value value="100"/>
+      <value value="500"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="number-crimes-yearly-per10k">
+      <value value="1000"/>
+      <value value="3000"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-oc-families">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-oc-persons">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-persons">
+      <value value="500"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="percentage-of-facilitators">
+      <value value="0.05"/>
+      <value value="0.1"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
