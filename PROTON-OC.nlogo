@@ -1816,7 +1816,7 @@ num-persons
 num-persons
 100
 10000
-2000.0
+500.0
 100
 1
 NIL
@@ -1916,7 +1916,7 @@ max-accomplice-radius
 max-accomplice-radius
 1
 4
-2.0
+4.0
 1
 1
 NIL
@@ -1931,7 +1931,7 @@ oc-embeddedness-radius
 oc-embeddedness-radius
 1
 4
-2.0
+4.0
 1
 1
 NIL
@@ -1961,7 +1961,7 @@ number-arrests-per-year
 number-arrests-per-year
 0
 100
-30.0
+100.0
 5
 1
 NIL
@@ -2072,7 +2072,7 @@ num-oc-persons
 num-oc-persons
 2
 200
-30.0
+50.0
 1
 1
 NIL
@@ -2087,7 +2087,7 @@ num-oc-families
 num-oc-families
 1
 50
-8.0
+10.0
 1
 1
 NIL
@@ -2123,7 +2123,7 @@ CHOOSER
 family-intervention
 family-intervention
 "none" "remove-if-caught" "remove-if-OC-member" "remove-if-caught-and-OC-member"
-0
+2
 
 CHOOSER
 540
@@ -2169,7 +2169,7 @@ ticks-between-intervention
 ticks-between-intervention
 1
 24
-12.0
+1.0
 1
 1
 NIL
@@ -2225,7 +2225,7 @@ percentage-of-facilitators
 percentage-of-facilitators
 0
 0.01
-0.005
+0.1
 0.001
 1
 NIL
@@ -2328,7 +2328,7 @@ CHOOSER
 intervention
 intervention
 "use current values" "baseline" "preventive" "disruptive" "students" "facilitators" "preventive-strong" "disruptive-strong" "students-strong" "facilitators-strong"
-1
+2
 
 MONITOR
 810
@@ -2462,7 +2462,7 @@ number-crimes-yearly-per10k
 number-crimes-yearly-per10k
 0
 3000
-2000.0
+1000.0
 100
 1
 NIL
@@ -2520,7 +2520,7 @@ facilitator-repression-multiplier
 facilitator-repression-multiplier
 1
 5
-2.0
+1.0
 0.1
 1
 NIL
@@ -2544,7 +2544,7 @@ SWITCH
 608
 constant-population?
 constant-population?
-1
+0
 1
 -1000
 
@@ -2929,10 +2929,10 @@ NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="branch_results_collect" repetitions="30" runMetricsEveryStep="true">
+  <experiment name="branch_results_collect" repetitions="15" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="400"/>
+    <timeLimit steps="200"/>
     <metric>o1</metric>
     <metric>o2</metric>
     <metric>o3</metric>
