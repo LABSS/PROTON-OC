@@ -1961,7 +1961,7 @@ number-arrests-per-year
 number-arrests-per-year
 0
 100
-100.0
+500.0
 5
 1
 NIL
@@ -2123,7 +2123,7 @@ CHOOSER
 family-intervention
 family-intervention
 "none" "remove-if-caught" "remove-if-OC-member" "remove-if-caught-and-OC-member"
-2
+0
 
 CHOOSER
 540
@@ -2328,7 +2328,7 @@ CHOOSER
 intervention
 intervention
 "use current values" "baseline" "preventive" "disruptive" "students" "facilitators" "preventive-strong" "disruptive-strong" "students-strong" "facilitators-strong"
-2
+9
 
 MONITOR
 810
@@ -2462,7 +2462,7 @@ number-crimes-yearly-per10k
 number-crimes-yearly-per10k
 0
 3000
-1000.0
+3000.0
 100
 1
 NIL
@@ -2507,7 +2507,7 @@ SWITCH
 408
 facilitator-repression?
 facilitator-repression?
-1
+0
 1
 -1000
 
@@ -2520,7 +2520,7 @@ facilitator-repression-multiplier
 facilitator-repression-multiplier
 1
 5
-1.0
+20.0
 0.1
 1
 NIL
