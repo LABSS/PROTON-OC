@@ -673,9 +673,10 @@ class ProtonOC(Model):
         for agent in self.schedule.agents:
             friends = agent.neighbors.get('friendship')
             if len(friends) > agent.dunbar_number():
-                for friend in self.rng.choice(friends,
-                                              len(friends) - agent.dunbar_number(),
-                                              replace=False):
+                to_remove = self.rng.choice(list(friends),
+                                            int(len(friends) - agent.dunbar_number()),
+                                            replace=False)
+                for friend in to_remove:
                     friend.remove_friendship(agent)
 
 
@@ -688,9 +689,11 @@ class ProtonOC(Model):
         for agent in self.schedule.agents:
             friends = agent.get_neighbor_list('professional')
             if len(friends) > 30:
-                for friend in self.rng.choice(friends, int(len(friends) - 30), replace=False):
+                to_remove = self.rng.choice(list(friends),
+                                            int(len(friends) - 30),
+                                            replace=False)
+                for friend in to_remove:
                     friend.remove_professional(agent)
-
 
     def setup_oc_groups(self) -> None:
         """
@@ -1700,7 +1703,9 @@ class ProtonOC(Model):
                               "number_protected_recruited_this_tick", "people_jailed",
                               "number_offspring_recruited_this_tick", "number_crimes",
                               "big_crime_from_small_fish", "tick", "current_oc_members",
-                              "current_num_persons"}.union(set(args)) #num_oc #
+                              "current_num_persons", "number_weddings",
+                              "kids_intervention_counter",
+                              }.union(set(args)) #num_oc #
         # num_of_family
         for key in self.snapshot_keys:
             if key not in self.__dict__.keys():
@@ -1739,3 +1744,4 @@ if __name__ == "__main__":
     model = ProtonOC(collect=False)
     model.intervention = "baseline"
     model.run(verbose=True)
+        

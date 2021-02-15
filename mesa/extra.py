@@ -329,6 +329,10 @@ free_parameters = ["migration_on", "initial_agents", "num_ticks", "intervention"
                    "threshold_use_facilitators", "oc_embeddedness_radius",
                    "oc_boss_repression", "punishment_length", "constant_population"]
 
+interventions_type = ["facilitators-strong", "facilitators", "students-strong", "students",
+                      "disruptive-strong", "disruptive", "preventive-strong", "preventive",
+                      "baseline"]
+
 #Numba functions
 @numba.jit(nopython=True)
 def _age(tick: int, birth_tick: int) -> int:
