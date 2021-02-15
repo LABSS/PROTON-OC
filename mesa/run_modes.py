@@ -7,10 +7,6 @@ from collections import Counter
 import multiprocessing
 import json
 
-#todo: aggiungere parametro per salvare dati
-#todo: aggiungere parametro per salvare lo stato di un tick
-#todo: qui init deve avere i seguenti attributi: name, save_path, save_state (tick)
-
 class BaseMode:
     """
     Base mode class
