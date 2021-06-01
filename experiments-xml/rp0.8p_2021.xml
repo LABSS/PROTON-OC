@@ -65,6 +65,7 @@
   <metric>mean [ count link-neighbors ] of all-persons</metric>
   <metric>dead-oc</metric>
   <metric>recruited</metric>
+  <metric>network-used</metric>
   <metric>intervention-end</metric>
   <enumeratedValueSet variable="intervention">
       <value value="&quot;baseline&quot;" />
