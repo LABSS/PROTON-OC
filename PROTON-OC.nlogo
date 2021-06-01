@@ -149,6 +149,8 @@ globals [
   number-crimes
   crime-multiplier
   kids-intervention-counter
+  recruited
+  dead-oc
 ]
 
 to profile-setup
@@ -1131,6 +1133,7 @@ to make-people-die
       set number-deceased number-deceased + 1
       if my-job != nobody [ ask my-job [ set my-worker nobody ] ]
       if my-school != nobody [ ask my-school [ set my-students other my-students ] ]
+      if oc-member? [set dead-oc dead-oc + 1]
       die
     ]
   ]
@@ -1197,6 +1200,7 @@ to commit-crimes
       ask co-offenders with [ not oc-member? ] [
       set new-recruit ticks
       set oc-member? true
+      set recruited recruited + 1
       if any? in-offspring-link-neighbors with [ male? and oc-member? ] [
         set number-offspring-recruited-this-tick number-offspring-recruited-this-tick + 1
       ]
