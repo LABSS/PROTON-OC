@@ -151,6 +151,7 @@ globals [
   kids-intervention-counter
   recruited
   dead-oc
+  network-names network-used ; number of times a specific network is used for recruiting. All links existing are increased.
 ]
 
 to profile-setup
@@ -204,6 +205,8 @@ to setup
   reset-timer
   set initial-random-seed random 4294967295 - 2147483648
   random-seed initial-random-seed
+  set network-names [ "criminal-links" "household-links" "partner-links" "sibling-links" "offspring-links" "friendship-links" "professional-links" "school-links" ]
+  set network-used  [  0                0                  0              0               0                 0                  0                    0             ]
   load-stats-tables
   set facilitator-fails 0
   set facilitator-crimes 0
@@ -1170,6 +1173,14 @@ to calculate-crime-multiplier
   set crime-multiplier number-crimes-yearly-per10k / 10000 * count all-persons / total-crimes
 end
 
+to increase-network-used
+  let position-net position (word breed) network-names
+  if (position-net != false)  [
+    set network-used replace-item position-net network-used  ((item position-net network-used ) + 1)
+  ]
+  show network-used
+end
+
 to commit-crimes
   let co-offender-groups []
   let co-offenders-started-by-OC []
@@ -1184,7 +1195,7 @@ to commit-crimes
       ask rnd:weighted-one-of people-in-cell [ criminal-tendency + criminal-tendency-addme-for-weighted-extraction ] [
         let accomplices find-accomplices number-of-accomplices ; this takes care of facilitators as well.
         set co-offender-groups lput accomplices co-offender-groups
-        if oc-member? [ set co-offenders-started-by-OC lput accomplices co-offenders-started-by-OC ]
+        if oc-member? [ set co-offenders-started-by-OC lput (list self accomplices) co-offenders-started-by-OC ]
         ; check for big crimes started from a normal guy
         if count accomplices > this-is-a-big-crime and criminal-tendency < good-guy-threshold [
           set big-crime-from-small-fish big-crime-from-small-fish +  1
@@ -1197,10 +1208,14 @@ to commit-crimes
     set co-offender-group-histo make-co-offending-histo co-offender-groups
   ]
   foreach co-offenders-started-by-OC [ co-offenders ->
-      ask co-offenders with [ not oc-member? ] [
+    let originator item 0 co-offenders
+    ask (item 1 co-offenders) with [ not oc-member? ] [
       set new-recruit ticks
       set oc-member? true
       set recruited recruited + 1
+      ask my-links with [ other-end = originator ] [
+        increase-network-used
+      ]
       if any? in-offspring-link-neighbors with [ male? and oc-member? ] [
         set number-offspring-recruited-this-tick number-offspring-recruited-this-tick + 1
       ]
@@ -1265,7 +1280,7 @@ to retire-persons
   ]
 end
 
-to-report find-accomplices [ n ] ; person reporter
+to-report find-accomplices [ n ] ; person reporter. Reports a turtleset including the caller.
   if n = 0 [ report turtle-set self ]
   let d 1 ; start with a network distance of 1
   let accomplices no-turtles
