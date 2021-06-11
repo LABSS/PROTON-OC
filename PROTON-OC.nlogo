@@ -427,7 +427,7 @@ to go
   calc-criminal-tendency-subtractfromme-for-inverse-weighted-extraction
   wedding
   reset-oc-embeddedness
-  commit-crimes
+  ifelse all-crimes-by-OC-members? [ commit-crimes-OC-only ] [ commit-crimes ]
   retire-persons
   make-baby
   remove-excess-friends
@@ -1240,6 +1240,60 @@ to commit-crimes
   set target-n-of-arrests floor target-n-of-arrests + ifelse-value (random-float 1 < (target-n-of-arrests - floor target-n-of-arrests)) [ 1 ] [ 0 ]
   ask rnd:weighted-n-of target-n-of-arrests criminals [ arrest-weight ] [ get-caught ]
 end
+
+to commit-crimes-OC-only
+  let co-offender-groups []
+  let co-offenders-started-by-OC []
+  repeat number-crimes-yearly-per10k / 10000 * count persons [
+    set number-crimes number-crimes + 1
+    ask one-of persons with [ oc-member? ] [
+      let accomplices find-accomplices (number-of-accomplices + 3); this takes care of facilitators as well.
+      set co-offender-groups lput accomplices co-offender-groups
+      if oc-member? [ set co-offenders-started-by-OC lput (list self accomplices) co-offenders-started-by-OC ]
+      ; check for big crimes started from a normal guy
+      if count accomplices > this-is-a-big-crime and criminal-tendency < good-guy-threshold [
+        set big-crime-from-small-fish big-crime-from-small-fish +  1
+      ]
+    ]
+  ]
+  foreach co-offender-groups commit-crime
+  if not empty? co-offender-groups [
+    set co-offender-group-histo make-co-offending-histo co-offender-groups
+  ]
+  foreach co-offenders-started-by-OC [ co-offenders ->
+    let originator item 0 co-offenders
+    ask (item 1 co-offenders) with [ not oc-member? ] [
+      set new-recruit ticks
+      set oc-member? true
+      set recruited recruited + 1
+      ask my-links with [ other-end = originator ] [
+        increase-network-used
+      ]
+      if any? in-offspring-link-neighbors with [ male? and oc-member? ] [
+        set number-offspring-recruited-this-tick number-offspring-recruited-this-tick + 1
+      ]
+      if target-of-intervention [
+        set number-protected-recruited-this-tick number-protected-recruited-this-tick + 1
+      ]
+    ]
+  ]
+  let criminals (turtle-set co-offender-groups)
+  if-else (intervention-on? and facilitator-repression?) [
+    ask criminals [ set arrest-weight ifelse-value (facilitator?) [ facilitator-repression-multiplier ] [ 1 ] ]
+  ] [
+    if-else (intervention-on? and OC-boss-repression? and any? criminals with [ oc-member? ]) [
+      ask criminals with [ not oc-member? ] [ set arrest-weight 1 ]
+      calc-OC-status criminals with [ oc-member? ]
+    ] [ ; no intervention active
+      ask criminals [ set arrest-weight 1 ]
+    ]
+  ]
+  let target-n-of-arrests number-arrests-per-year / ticks-per-year / 10000 * count persons
+  ; if I don't add some 1, for low levels of arrests and few agents nobody ever will be arrested.
+  set target-n-of-arrests floor target-n-of-arrests + ifelse-value (random-float 1 < (target-n-of-arrests - floor target-n-of-arrests)) [ 1 ] [ 0 ]
+  ask rnd:weighted-n-of target-n-of-arrests criminals [ arrest-weight ] [ get-caught ]
+end
+
 
 to-report make-co-offending-histo [ co-offender-groups ]
   let max-size max map count co-offender-groups + 1
@@ -2584,6 +2638,17 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "let _w (all-persons with [ oc-member? ]) if (any? _w) [ plot count _w ]"
+
+SWITCH
+540
+445
+787
+478
+all-crimes-by-OC-members?
+all-crimes-by-OC-members?
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
