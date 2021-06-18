@@ -1,4 +1,4 @@
-__includes ["nls_files/experiments.nls"]
+__includes ["nls_files/experiments.nls" "nls_files/make-network.nls"]
 
 extensions [nw table csv profiler rnd]
 
