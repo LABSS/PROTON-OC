@@ -221,7 +221,7 @@ to setup
   setup-inactive-status
   if unemployment-multiplier != "base" [ fix-unemployment unemployment-multiplier ]
   generate-households
-  setup-siblings
+  ;setup-siblings
   setup-employers-jobs
   ask persons with [ my-job = nobody and my-school = nobody and age >= 16 and age < retirement-age and job-level > 1 ] [ find-job ]
   init-professional-links
@@ -1178,7 +1178,6 @@ to increase-network-used
   if (position-net != false)  [
     set network-used replace-item position-net network-used  ((item position-net network-used ) + 1)
   ]
-  show network-used
 end
 
 to commit-crimes
@@ -1343,9 +1342,15 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
   ; first create the group
   nw:with-context persons person-links [
     while [ count accomplices < n and d <= max-accomplice-radius ] [
-      let candidates sort-on [
-        candidate-weight
-      ] (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d) with [ nw:distance-to myself = d ]
+;      let candidates sort-on [
+;        candidate-weight
+;      ] (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
+;         with [ nw:distance-to myself = d ]
+;
+      let candidates
+;        candidate-weight
+      [self] of  (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
+         with [ nw:distance-to myself = d ]
       while [ count accomplices < n and not empty? candidates ] [
         let candidate first candidates
         set candidates but-first candidates
@@ -1361,7 +1366,8 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
           facilitator?
         ]
       ] of accomplices
-      if any? available-facilitators [ set accomplices (turtle-set available-facilitators accomplices) ]
+      if any? available-facilitators [
+        set accomplices (turtle-set one-of available-facilitators accomplices) ]
     ]
   ]
   if count accomplices < n [ set crime-size-fails crime-size-fails + 1 ]
@@ -1889,7 +1895,7 @@ num-persons
 num-persons
 100
 10000
-2000.0
+1000.0
 100
 1
 NIL
@@ -1989,7 +1995,7 @@ max-accomplice-radius
 max-accomplice-radius
 1
 4
-2.0
+1.0
 1
 1
 NIL
@@ -2160,7 +2166,7 @@ num-oc-families
 num-oc-families
 1
 50
-8.0
+4.0
 1
 1
 NIL
@@ -2491,7 +2497,7 @@ CHOOSER
 unemployment-multiplier
 unemployment-multiplier
 "base" 0.5 1.5 0.410067526089626 0.205033763044813 0.615101289134438
-3
+0
 
 MONITOR
 575
