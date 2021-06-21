@@ -203,7 +203,7 @@ to setup
   choose-intervention-setting
   reset-ticks ; so age can be computed
   reset-timer
-  set initial-random-seed random 4294967295 - 2147483648
+  set initial-random-seed 1;random 4294967295 - 2147483648
   random-seed initial-random-seed
   set network-names [ "criminal-links" "household-links" "partner-links" "sibling-links" "offspring-links" "friendship-links" "professional-links" "school-links" ]
   set network-used  [  0                0                  0              0               0                 0                  0                    0             ]
