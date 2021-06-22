@@ -22,3 +22,34 @@ to test2
   set num-co-offenders-dist but-first csv:from-file "inputs/general/data/num_co_offenders_dist.csv"
   ;commit-crimes-OC-only
 end
+
+; to be used from the command line to get a dump
+to dump-all-person-networks
+foreach network-names [ listname ->
+    let network-agentset links with [ breed = runresult listname ]
+    if any? network-agentset [
+      let network-file-name (word "networks/" listname  ".dl")
+      nw:with-context persons runresult listname [
+        nw:save-dl network-file-name
+      ]
+    ]
+  ]
+end
+
+; to be used from the command line to load a dump
+to load-all-person-networks
+  foreach network-names [ name ->
+    let it (word "networks/" name ".dl")
+    if file-exists? it [
+      show it
+      ask runresult name [ die ]
+      let file-content  (csv:from-file it " ")
+      if length file-content > 5 [ repeat 5 [ set file-content but-first file-content ] ]
+      show file-content
+      foreach file-content [ a -> 
+        ask person read-from-string but-first item 0 a [ create-partner-link-with person read-from-string but-first item 1 a ]
+      ]
+    ]
+  ]
+end
+  
