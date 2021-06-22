@@ -38,7 +38,7 @@ to dump-all-person-networks
 end
   
 ; to be used from the command line to load a dump
-to load-all-person-networks2
+to load-all-person-networks
   foreach network-names [ name ->
     let it (word "networks/" name ".dl")
     if file-exists? it [
