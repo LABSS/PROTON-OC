@@ -152,6 +152,7 @@ globals [
   recruited
   dead-oc
   network-names network-used ; number of times a specific network is used for recruiting. All links existing are increased.
+  accomplices-counter
 ]
 
 to profile-setup
@@ -203,7 +204,7 @@ to setup
   choose-intervention-setting
   reset-ticks ; so age can be computed
   reset-timer
-  set initial-random-seed 1;random 4294967295 - 2147483648
+  set initial-random-seed 4;random 4294967295 - 2147483648
   random-seed initial-random-seed
   set network-names [ "criminal-links" "household-links" "partner-links" "sibling-links" "offspring-links" "friendship-links" "professional-links" "school-links" ]
   set network-used  [  0                0                  0              0               0                 0                  0                    0             ]
@@ -1181,6 +1182,7 @@ to increase-network-used
 end
 
 to commit-crimes
+  show "what?"
   let co-offender-groups []
   let co-offenders-started-by-OC []
   foreach table:keys c-range-by-age-and-sex [ cell ->
@@ -1243,10 +1245,12 @@ end
 to commit-crimes-OC-only
   let co-offender-groups []
   let co-offenders-started-by-OC []
-  repeat number-crimes-yearly-per10k / 10000 * count persons [
+  repeat round (number-crimes-yearly-per10k / 10000 * count persons) [
     set number-crimes number-crimes + 1
     ask one-of persons with [ oc-member? ] [
-      let accomplices find-accomplices (number-of-accomplices + 3); this takes care of facilitators as well.
+      let accomplices-number 7; (number-of-accomplices + 3)
+      set accomplices-counter accomplices-counter + accomplices-number
+      let accomplices find-accomplices accomplices-number; this takes care of facilitators as well.
       set co-offender-groups lput accomplices co-offender-groups
       if oc-member? [ set co-offenders-started-by-OC lput (list self accomplices) co-offenders-started-by-OC ]
       ; check for big crimes started from a normal guy
@@ -1353,9 +1357,10 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
          with [ nw:distance-to myself = d ]
       while [ count accomplices < n and not empty? candidates ] [
         let candidate first candidates
+        if count turtle-set candidate > 1 [ show "scream" ]
         set candidates but-first candidates
         set accomplices (turtle-set candidate accomplices)
-        if [ facilitator? ] of candidate [ set n n + 1 set facilitator-needed? false ]
+        if facilitator-needed? and [ facilitator? ] of candidate [ set n n + 1 set facilitator-needed? false ]
       ]
       set d d + 1
     ]
@@ -1371,6 +1376,7 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
     ]
   ]
   if count accomplices < n [ set crime-size-fails crime-size-fails + 1 ]
+  if count accomplices > 7 [ show n show count accomplices ]
   set accomplices (turtle-set self accomplices)
   if n >= threshold-use-facilitators [
     ifelse any? accomplices with [ facilitator? ] [
@@ -2319,7 +2325,7 @@ threshold-use-facilitators
 threshold-use-facilitators
 0
 10
-4.0
+1000.0
 1
 1
 NIL
