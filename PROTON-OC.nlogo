@@ -1178,7 +1178,6 @@ to increase-network-used
   if (position-net != false)  [
     set network-used replace-item position-net network-used  ((item position-net network-used ) + 1)
   ]
-  show network-used
 end
 
 to commit-crimes
