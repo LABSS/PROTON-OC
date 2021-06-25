@@ -1296,7 +1296,7 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
         let candidate first candidates
         set candidates but-first candidates
         set accomplices (turtle-set candidate accomplices)
-        if [ facilitator? ] of candidate [ set n n + 1 set facilitator-needed? false ]
+        if facilitator-needed? and [ facilitator? ] of candidate [ set n n + 1 set facilitator-needed? false ]
       ]
       set d d + 1
     ]
