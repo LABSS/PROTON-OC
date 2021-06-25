@@ -47,16 +47,15 @@ to load-all-person-networks
       let file-content  (csv:from-file it " ")
       if length file-content > 5 [ repeat 5 [ set file-content but-first file-content ] ]
       ;show file-content
-      show (word "ask person 0 [ create-" substring name 0 (length name - 1) "-with person 1 ]")
-      ;run (word "ask person 0 [ create-" substring name 0 (length name - 1) "-with person 1 ]")
       ifelse name = "offspring-links" [
         foreach file-content [ a ->        
           run (word "ask person " item 0 a " [ create-" substring name 0 (length name - 1) "-to person " item 1 a " ]")
-        ]  [
-          foreach file-content [ a ->        
-            run (word "ask person " item 0 a " [ create-" substring name 0 (length name - 1) "-with person " item 1 a " ]")      
-          ]
+        ] 
+      ]  [
+        foreach file-content [ a ->        
+          run (word "ask person " item 0 a " [ create-" substring name 0 (length name - 1) "-with person " item 1 a " ]")      
         ]
       ]
     ]
+  ]  
 end
