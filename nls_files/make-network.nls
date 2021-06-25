@@ -7,8 +7,12 @@ to test2
     set cached-oc-embeddedness nobody
     set oc-member? false
     set facilitator?  false
-    set male? true
+    set male? who mod 2 = 0
     set target-of-intervention false
+    set age who
+    set education-level 1
+    ;set oc-embeddedness 1
+    set criminal-tendency 1
   ]
   ask person 0 [
     create-partner-link-with person 1
@@ -18,6 +22,7 @@ to test2
     create-criminal-link-with person 5 [ set num-co-offenses 5 ]
     create-offspring-link-from person 5
   ]
+  ;ask person 6 [ create-friendship-link-with person 5 ]
   ask person 5 [ set oc-member? true ]
   set num-co-offenders-dist but-first csv:from-file "inputs/general/data/num_co_offenders_dist.csv"
   ;commit-crimes-OC-only

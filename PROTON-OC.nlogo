@@ -204,7 +204,7 @@ to setup
   choose-intervention-setting
   reset-ticks ; so age can be computed
   reset-timer
-  set initial-random-seed 1;random 4294967295 - 2147483648
+  set initial-random-seed random 4294967295 - 2147483648
   random-seed initial-random-seed
   set network-names [ "criminal-links" "household-links" "partner-links" "sibling-links" "offspring-links" "friendship-links" "professional-links" "school-links" ]
   set network-used  [  0                0                  0              0               0                 0                  0                    0             ]
@@ -1345,15 +1345,16 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
   ; first create the group
   nw:with-context persons person-links [
     while [ count accomplices < n and d <= max-accomplice-radius ] [
-;      let candidates sort-on [
-;        candidate-weight
-;      ] (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
-;         with [ nw:distance-to myself = d ]
-;
-      let candidates
-;        candidate-weight
-      [self] of  (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
+      let candidates sort-on [
+        candidate-weight
+      ] (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
          with [ nw:distance-to myself = d ]
+;
+;      let candidates
+;        candidate-weight
+;      [self] of  (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
+;         with [ nw:distance-to myself = d ]
+      show candidates
       while [ count accomplices < n and not empty? candidates ] [
         let candidate first candidates
         if count turtle-set candidate > 1 [ show "scream" ]
@@ -1421,11 +1422,13 @@ end
 ; this is what in the paper is called r - this is r
 ;R is then operationalised as the proportion of OC members among the social relations of each individual (comprising family, friendship, school, working and co-offending relations)
 to-report candidate-weight ; person reporter
-  report -1 * ifelse-value [ oc-member? ] of myself [
+  let a -1 * ifelse-value [ oc-member? ] of myself [
     (social-proximity-with myself * oc-embeddedness * criminal-tendency)
   ] [
     (social-proximity-with myself * criminal-tendency)
   ]
+  show a
+  report a
 end
 
 to calculate-criminal-tendency
@@ -2000,7 +2003,7 @@ max-accomplice-radius
 max-accomplice-radius
 1
 4
-1.0
+2.0
 1
 1
 NIL
