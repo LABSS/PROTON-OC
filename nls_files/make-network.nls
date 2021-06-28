@@ -3,16 +3,20 @@ to test2
   reset-ticks
   set network-names [ "criminal-links" "household-links" "partner-links" "sibling-links" "offspring-links" "friendship-links" "professional-links" "school-links" ]
   set network-used  [  0                0                  0              0               0                 0                  0                    0             ]
-  create-persons 6 [
+  create-persons 18 [
     set cached-oc-embeddedness nobody
     set oc-member? false
     set facilitator?  false
     set male? who mod 2 = 0
     set target-of-intervention false
-    set age who
-    set education-level 1
+    set age who * 149 mod 45 + 10
+    set education-level who * 149 mod 4
     ;set oc-embeddedness 1
-    set criminal-tendency 1
+    set criminal-tendency who * 149 mod 100 / 100
+    set wealth-level education-level who * 149 mod 4
+    set job-level education-level who * 149 mod 4
+    set propensity education-level who * 149 mod 100 / 100
+    set migrant? who mod 3 = 0
   ]
   ask person 0 [
     create-partner-link-with person 1
@@ -22,9 +26,32 @@ to test2
     create-criminal-link-with person 5 [ set num-co-offenses 5 ]
     create-offspring-link-from person 5
   ]
-  ;ask person 6 [ create-friendship-link-with person 5 ]
+  ask person 6 [ create-friendship-link-with person 5 ]
+  
+  ask person 7 [ create-partner-link-with person 8 ]
+  ask person 8 [ create-friendship-link-with person 9 ]
+  ask person 9 [ create-offspring-link-to person 7 ]
+  ask person 10 [ create-professional-link-with person 9 ]
+  ask person 10 [ create-professional-link-with person 11 ]
+  ask person 10 [ create-school-link-with person 13 ]
+  ask person 10 [ create-professional-link-with person 9 ]
+  ask person 11 [ create-professional-link-with person 12 ]
+  ask person 12 [ create-professional-link-with person 13]
+   ask person 12 [ create-professional-link-with person 14 ]
+   ask person 12 [ create-professional-link-with person 16 ]
+   
+  ask person 13 [ create-friendship-link-with person 15 ]
+  ask person 14 [ create-professional-link-with person 15 ]
+  ask person 14 [ create-household-link-with person 17 ]
+  ask person 16 [ create-household-link-with person 12 ]
+  ask person 16 [ create-household-link-with person 17 ]
+  
   ask person 5 [ set oc-member? true ]
+  ask person 17 [ set oc-member? true ]
+  ask person 9 [ set facilitator? true ]
+  ask person 3 [ set facilitator? true ]
   set num-co-offenders-dist but-first csv:from-file "inputs/general/data/num_co_offenders_dist.csv"
+  
   ;commit-crimes-OC-only
 end
 
