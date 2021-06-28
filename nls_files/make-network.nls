@@ -13,9 +13,9 @@ to test2
     set education-level who * 149 mod 4
     ;set oc-embeddedness 1
     set criminal-tendency who * 149 mod 100 / 100
-    set wealth-level education-level who * 149 mod 4
-    set job-level education-level who * 149 mod 4
-    set propensity education-level who * 149 mod 100 / 100
+    set wealth-level who * 149 mod 4
+    set job-level  who * 149 mod 4
+    set propensity who * 149 mod 100 / 100
     set migrant? who mod 3 = 0
   ]
   ask person 0 [
