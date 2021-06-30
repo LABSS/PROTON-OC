@@ -34,7 +34,6 @@ to test2
   ask person 10 [ create-professional-link-with person 9 ]
   ask person 10 [ create-professional-link-with person 11 ]
   ask person 10 [ create-school-link-with person 13 ]
-  ask person 10 [ create-professional-link-with person 9 ]
   ask person 11 [ create-professional-link-with person 12 ]
   ask person 12 [ create-professional-link-with person 13]
    ask person 12 [ create-professional-link-with person 14 ]
