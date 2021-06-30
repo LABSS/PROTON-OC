@@ -27,7 +27,6 @@ to test2
     create-offspring-link-from person 5
   ]
   ask person 6 [ create-friendship-link-with person 5 ]
-  
   ask person 7 [ create-partner-link-with person 8 ]
   ask person 8 [ create-friendship-link-with person 9 ]
   ask person 9 [ create-offspring-link-to person 7 ]
@@ -36,8 +35,8 @@ to test2
   ask person 10 [ create-school-link-with person 13 ]
   ask person 11 [ create-professional-link-with person 12 ]
   ask person 12 [ create-professional-link-with person 13]
-   ask person 12 [ create-professional-link-with person 14 ]
-   ask person 12 [ create-professional-link-with person 16 ]
+  ask person 12 [ create-professional-link-with person 14 ]
+  ask person 12 [ create-professional-link-with person 16 ]
    
   ask person 13 [ create-friendship-link-with person 15 ]
   ask person 14 [ create-professional-link-with person 15 ]
@@ -51,7 +50,18 @@ to test2
   ask person 3 [ set facilitator? true ]
   set num-co-offenders-dist but-first csv:from-file "inputs/general/data/num_co_offenders_dist.csv"
   
-  ;commit-crimes-OC-only
+  ;commit-crimes-OC-only   [ show list who cached-oc-embeddedness ] of ask persons reset-oc-embeddedness
+end
+
+
+; running the basic test sequence
+to run-test2
+  test2
+  commit-crimes-OC-only  
+  ask persons with [oc-member?] [set retired? oc-embeddedness] ; poor retired
+  show (  sort-by [ [a b] -> item 0 a < item 0 b ] [ list who cached-oc-embeddedness ] of  persons) 
+  show (  sort-by [ [a b] -> item 0 a < item 0 b ] [ list who oc-member? ] of  persons) 
+  ask  meta-links [show  dist]
 end
 
 ; to be used from the command line to get a dump

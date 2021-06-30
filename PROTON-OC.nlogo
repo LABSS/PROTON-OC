@@ -1244,9 +1244,9 @@ end
 to commit-crimes-OC-only
   let co-offender-groups []
   let co-offenders-started-by-OC []
-  repeat round (number-crimes-yearly-per10k / 10000 * count persons) [
-    set number-crimes number-crimes + 1
-    ask one-of persons with [ oc-member? ] [
+  ;repeat round (number-crimes-yearly-per10k / 10000 * count persons) [
+    ask persons with [ oc-member? ] [
+      set number-crimes number-crimes + 1
       let accomplices-number 7; (number-of-accomplices + 3)
       set accomplices-counter accomplices-counter + accomplices-number
       let accomplices find-accomplices accomplices-number; this takes care of facilitators as well.
@@ -1257,7 +1257,7 @@ to commit-crimes-OC-only
         set big-crime-from-small-fish big-crime-from-small-fish +  1
       ]
     ]
-  ]
+  ;]
   foreach co-offender-groups commit-crime
   if not empty? co-offender-groups [
     set co-offender-group-histo make-co-offending-histo co-offender-groups
@@ -1375,7 +1375,7 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
         set accomplices (turtle-set one-of available-facilitators accomplices) ]
     ]
   ]
-  if count accomplices < n [ set crime-size-fails crime-size-fails + 1 ]
+  ;if count accomplices < n [ set crime-size-fails crime-size-fails + 1 ]
   if count accomplices > 7 [ show n show count accomplices ]
   set accomplices (turtle-set self accomplices)
   if n >= threshold-use-facilitators [
@@ -1427,7 +1427,7 @@ to-report candidate-weight ; person reporter
   ] [
     (social-proximity-with myself * criminal-tendency)
   ]
-  show a
+  ;show a
   report a
 end
 
@@ -1525,6 +1525,7 @@ to-report oc-embeddedness ; person reporter
       if any? other oc-members [
         update-meta-links agents
         nw:with-context agents meta-links [
+
           set cached-oc-embeddedness (find-oc-weight-distance oc-members / find-oc-weight-distance agents)
           ;          sum [ 1 / nw:weighted-distance-to myself dist ] of other oc-members /
           ;          sum [ 1 / nw:weighted-distance-to myself dist ] of other agents
@@ -2003,7 +2004,7 @@ max-accomplice-radius
 max-accomplice-radius
 1
 4
-2.0
+1.0
 1
 1
 NIL
@@ -2327,7 +2328,7 @@ threshold-use-facilitators
 threshold-use-facilitators
 0
 10
-1000.0
+3.0
 1
 1
 NIL
