@@ -1850,6 +1850,12 @@ end
 to-report just-changed-age?
   report floor ((ticks - birth-tick) / ticks-per-year) = ((ticks - birth-tick) / ticks-per-year)
 end
+
+to get-co-offenses
+  ask persons [
+    ask my-criminal-links [
+  show num-co-offenses]]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 950
