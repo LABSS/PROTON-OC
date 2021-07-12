@@ -1354,7 +1354,7 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
 ;        candidate-weight
 ;      [self] of  (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
 ;         with [ nw:distance-to myself = d ]
-      show candidates
+      show word "candidates:" candidates
       while [ count accomplices < n and not empty? candidates ] [
         let candidate first candidates
         if count turtle-set candidate > 1 [ show "scream" ]
@@ -1849,12 +1849,6 @@ end
 
 to-report just-changed-age?
   report floor ((ticks - birth-tick) / ticks-per-year) = ((ticks - birth-tick) / ticks-per-year)
-end
-
-to get-co-offenses
-  ask persons [
-    ask my-criminal-links [
-  show num-co-offenses]]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW

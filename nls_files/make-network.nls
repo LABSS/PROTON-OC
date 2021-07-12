@@ -61,7 +61,14 @@ to run-test2
   ask persons with [oc-member?] [set retired? oc-embeddedness] ; poor retired
   show (  sort-by [ [a b] -> item 0 a < item 0 b ] [ list who cached-oc-embeddedness ] of  persons) 
   show (  sort-by [ [a b] -> item 0 a < item 0 b ] [ list who oc-member? ] of  persons) 
+  show (  sort-by [ [a b] -> item 0 a < item 0 b ] [ list who [ num-co-offenses ] of my-criminal-links ] of  persons) 
   ask  meta-links [show  dist]
+end
+
+to get-co-offenses
+  foreach sort-by [ [a b] -> item 0 a < item 0 b ] [ list who [ list [who] of other-end num-co-offenses ] of my-criminal-links ] of  persons [ a -> 
+    show a
+  ]
 end
 
 ; to be used from the command line to get a dump
