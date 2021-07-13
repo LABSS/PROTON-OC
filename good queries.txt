@@ -1,3 +1,43 @@
+# hunting for bugs in test2
+
+nw:with-context turtles meta-links [ ask turtle 0 [ show  find-oc-weight-distance (turtle-set turtle 1 turtle 2 turtle 3)  ]]
+
+test2
+commit-crimes-OC-only
+ask meta-links [die]
+update-meta-links (turtle-set person 0 person 2 person 1 person 3)
+nw:with-context turtles meta-links [ ask turtle 0 [ show  find-oc-weight-distance (turtle-set turtle 1 turtle 2 turtle 3)  ]]
+
+
+show [list [who] of both-ends dist] of meta-links
+
+show [list [who] of both-ends num-co-offenses ] of [my-criminal-links] of turtle 9
+
+
+ [[11 17] 0.058823529411764705]
+
+show []
+
+test2 repeat 5 [commit-crimes-OC-only] update-meta-links persons
+
+
+show sort-by [ [a b] -> item 0 item 0 a * 1000 + item 0 item 1 a  < item 0 item 0 b * 1000 + item 0 item 1 b ] [list [who] of both-ends dist] of meta-links
+
+
+show [list [who] of both-ends dist] of meta-links
+
+show [list [who] of both-ends num-co-offenses ] of [my-criminal-links] of turtle 11
+
+
+ask turtle 9 [ show [candidate-weight] of  turtle 13]
+
+show sort-by [ [a b] -> item 1 a   < item 1  b  ] [ list who [candidate-weight] of turtle 9 ] of [ link-neighbors ] of turtle 9
+
+sort-by [ [a b] -> item 1 a   < item 1  b  ] [ list who [[candidate-weight] of myself ] of turtle 9 ] of [ link-neighbors ] of turtle 9
+
+
+
+
 # the one-line uber-set
 set output? false set welfare-support "none" set intervention-start 13 set social-support "none" set intervention-end 36 set nat-propensity-threshold 1 set oc-embeddedness-radius 2 set data-folder "inputs/palermo/data/" set criminal-rate 1 set threshold-use-facilitators 4 set ticks-per-year 12 set percentage-of-facilitators 0.005 set nat-propensity-sigma 0.25 set targets-addressed-percent 10 set probability-of-getting-caught 0.05 set num-oc-families 8 set num-persons 550 set nat-propensity-m 1 set OC-members-scrutinize? false set family-intervention "none" set max-accomplice-radius 2 set ticks-between-intervention 1 set retirement-age 65 set num-oc-persons 20 set intervention "use current values" set punishment-length 1.0 set law-enforcement-rate 1.0 set education-rate 1.0 set employment-rate 1.0 set criminal-rate 1.0 set OC-boss-repression? false set number-crimes-yearly-per10k 2000
 
