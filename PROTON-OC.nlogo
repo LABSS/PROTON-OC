@@ -1245,7 +1245,8 @@ to commit-crimes-OC-only
   let co-offender-groups []
   let co-offenders-started-by-OC []
   ;repeat round (number-crimes-yearly-per10k / 10000 * count persons) [
-    ask persons with [ oc-member? ] [
+  foreach  sort persons with [ oc-member? ] [ me ->
+    ask me [
       set number-crimes number-crimes + 1
       let accomplices-number 7; (number-of-accomplices + 3)
       set accomplices-counter accomplices-counter + accomplices-number
@@ -1256,6 +1257,7 @@ to commit-crimes-OC-only
       if count accomplices > this-is-a-big-crime and criminal-tendency < good-guy-threshold [
         set big-crime-from-small-fish big-crime-from-small-fish +  1
       ]
+    ]
     ]
   ;]
   foreach co-offender-groups commit-crime
@@ -1279,21 +1281,6 @@ to commit-crimes-OC-only
       ]
     ]
   ]
-  let criminals (turtle-set co-offender-groups)
-  if-else (intervention-on? and facilitator-repression?) [
-    ask criminals [ set arrest-weight ifelse-value (facilitator?) [ facilitator-repression-multiplier ] [ 1 ] ]
-  ] [
-    if-else (intervention-on? and OC-boss-repression? and any? criminals with [ oc-member? ]) [
-      ask criminals with [ not oc-member? ] [ set arrest-weight 1 ]
-      calc-OC-status criminals with [ oc-member? ]
-    ] [ ; no intervention active
-      ask criminals [ set arrest-weight 1 ]
-    ]
-  ]
-  let target-n-of-arrests number-arrests-per-year / ticks-per-year / 10000 * count persons
-  ; if I don't add some 1, for low levels of arrests and few agents nobody ever will be arrested.
-  set target-n-of-arrests floor target-n-of-arrests + ifelse-value (random-float 1 < (target-n-of-arrests - floor target-n-of-arrests)) [ 1 ] [ 0 ]
-  ask rnd:weighted-n-of target-n-of-arrests criminals [ arrest-weight ] [ get-caught ]
 end
 
 
@@ -1349,12 +1336,16 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
         candidate-weight
       ] (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
          with [ nw:distance-to myself = d ]
+
+      if self = turtle 9 [
+        show  candidates
+      ]
 ;
 ;      let candidates
 ;        candidate-weight
 ;      [self] of  (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
 ;         with [ nw:distance-to myself = d ]
-      show word "candidates:" candidates
+      ;show word "candidates:" candidates
       while [ count accomplices < n and not empty? candidates ] [
         let candidate first candidates
         if count turtle-set candidate > 1 [ show "scream" ]
@@ -1372,7 +1363,7 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
         ]
       ] of accomplices
       if any? available-facilitators [
-        set accomplices (turtle-set one-of available-facilitators accomplices) ]
+        set accomplices (turtle-set first sort available-facilitators accomplices) ]
     ]
   ]
   ;if count accomplices < n [ set crime-size-fails crime-size-fails + 1 ]
@@ -1381,6 +1372,7 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
   if n >= threshold-use-facilitators [
     ifelse any? accomplices with [ facilitator? ] [
       set facilitator-crimes facilitator-crimes + 1
+      show word "recruiting " [who] of  accomplices with [ facilitator? ]
     ] [
       set facilitator-fails facilitator-fails + 1
     ]
@@ -1538,7 +1530,8 @@ to-report oc-embeddedness ; person reporter
 end
 
 to-report find-oc-weight-distance [ people ]
-  report sum [ 1 / nw:weighted-distance-to myself dist ] of other people
+  let a  sum [ 1 / nw:weighted-distance-to myself dist ] of other people
+  report a
 end
 
 to-report number-of-accomplices
@@ -1548,10 +1541,12 @@ to-report number-of-accomplices
 end
 
 to update-meta-links [ agents ]
+  ask meta-links [die]
   nw:with-context agents person-links [ ; limit the context to the agents in the radius of interest
     ask agents [
       ask other (turtle-set nw:turtles-in-radius 1 nw:turtles-in-reverse-radius 1) [
         create-meta-link-with myself [ ; if that link already exists, it won't be re-created
+          ; come on guy if I have just created and calculated you in one direction I don't want to redo exactly the same calc twice
           let w 0
           if [ household-link-with other-end ] of myself    != nobody [ set w w + 1 ]
           if [ friendship-link-with other-end ] of myself   != nobody [ set w w + 1 ]

@@ -29,7 +29,7 @@ to test2
   ask person 6 [ create-friendship-link-with person 5 ]
   ask person 7 [ create-partner-link-with person 8 ]
   ask person 8 [ create-friendship-link-with person 9 ]
-  ask person 9 [ create-offspring-link-to person 7 ]
+  ask person 9 [ create-offspring-link-to person 7 ]  ; different results between from and to
   ask person 10 [ create-professional-link-with person 9 ]
   ask person 10 [ create-professional-link-with person 11 ]
   ask person 10 [ create-school-link-with person 13 ]
@@ -66,10 +66,21 @@ to run-test2
 end
 
 to get-co-offenses
-  foreach sort-by [ [a b] -> item 0 a < item 0 b ] [ list who [ list [who] of other-end num-co-offenses ] of my-criminal-links ] of  persons [ a -> 
-    show a
+  foreach sort-by [ [a b] -> item 0 a < item 0 b ] [ list who [ (list [who] of other-end num-co-offenses) ] of my-criminal-links ] of  persons [
+    a -> 
+    foreach item 1 a [ b ->
+      ask turtle item 0 a [ show (word "oc-emb: " cached-oc-embeddedness " -> agent " item 0 b " weight: " item 1 b) ]
+      ] 
+    ]
+end
+
+to get-oc-embeddedness
+  foreach sort-by [ [a b] -> item 0 a < item 0 b ] [ list who cached-oc-embeddedness ] of  persons [
+    b ->
+    ask turtle item 0 b [ show (word " oc-emb: " item 1 b) ]
   ]
 end
+
 
 ; to be used from the command line to get a dump
 to dump-all-person-networks
