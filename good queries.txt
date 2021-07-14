@@ -1,5 +1,12 @@
 # hunting for bugs in test2
 
+
+      if self = turtle 9 [
+        show  candidates
+        foreach sort candidates [ a -> show list [who] of a show-soc-prom (turtle-set a turtle 9)  ]
+        foreach sort candidates [ a -> show[ list who cached-oc-embeddedness ] of a ]
+      ]
+
 nw:with-context turtles meta-links [ ask turtle 0 [ show  find-oc-weight-distance (turtle-set turtle 1 turtle 2 turtle 3)  ]]
 
 test2
@@ -21,7 +28,7 @@ show []
 test2 repeat 5 [commit-crimes-OC-only] update-meta-links persons
 
 
-show sort-by [ [a b] -> item 0 item 0 a * 1000 + item 0 item 1 a  < item 0 item 0 b * 1000 + item 0 item 1 b ] [list [who] of both-ends dist] of meta-links
+show sort-by [ [a b] -> item 0 item 0 a * 1000 + item 1 item 0 a  < item 0 item 0 b * 1000 + item 1 item 0 b ] [list [who] of both-ends dist] of meta-links
 
 
 show [list [who] of both-ends dist] of meta-links
@@ -35,6 +42,8 @@ show sort-by [ [a b] -> item 1 a   < item 1  b  ] [ list who [candidate-weight] 
 
 sort-by [ [a b] -> item 1 a   < item 1  b  ] [ list who [[candidate-weight] of myself ] of turtle 9 ] of [ link-neighbors ] of turtle 9
 
+
+ ask turtle 9 [ nw:with-context turtles person-links [ show sort [who] of (turtle-set nw:turtles-in-radius 1 nw:turtles-in-reverse-radius 1) with [ nw:distance-to myself = 1 ] ] ]
 
 
 

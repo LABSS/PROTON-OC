@@ -1267,6 +1267,7 @@ to commit-crimes-OC-only
   foreach co-offenders-started-by-OC [ co-offenders ->
     let originator item 0 co-offenders
     ask (item 1 co-offenders) with [ not oc-member? ] [
+      show word " am recruited by " [ who ] of originator
       set new-recruit ticks
       set oc-member? true
       set recruited recruited + 1
@@ -1336,10 +1337,6 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
         candidate-weight
       ] (turtle-set nw:turtles-in-radius d nw:turtles-in-reverse-radius d)
          with [ nw:distance-to myself = d ]
-
-      if self = turtle 9 [
-        show  candidates
-      ]
 ;
 ;      let candidates
 ;        candidate-weight
@@ -1372,7 +1369,7 @@ to-report find-accomplices [ n ] ; person reporter. Reports a turtleset includin
   if n >= threshold-use-facilitators [
     ifelse any? accomplices with [ facilitator? ] [
       set facilitator-crimes facilitator-crimes + 1
-      show word "recruiting " [who] of  accomplices with [ facilitator? ]
+      ;show word "recruiting " [who] of  accomplices with [ facilitator? ]
     ] [
       set facilitator-fails facilitator-fails + 1
     ]
@@ -1999,7 +1996,7 @@ max-accomplice-radius
 max-accomplice-radius
 1
 4
-1.0
+2.0
 1
 1
 NIL

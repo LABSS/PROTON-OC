@@ -29,7 +29,7 @@ to test2
   ask person 6 [ create-friendship-link-with person 5 ]
   ask person 7 [ create-partner-link-with person 8 ]
   ask person 8 [ create-friendship-link-with person 9 ]
-  ask person 9 [ create-offspring-link-to person 7 ]  ; different results between from and to
+  ask person 9 [ create-offspring-link-from person 7 ]  ; different results between from and to
   ask person 10 [ create-professional-link-with person 9 ]
   ask person 10 [ create-professional-link-with person 11 ]
   ask person 10 [ create-school-link-with person 13 ]
@@ -57,19 +57,14 @@ end
 ; running the basic test sequence
 to run-test2
   test2
-  commit-crimes-OC-only  
-  ask persons with [oc-member?] [set retired? oc-embeddedness] ; poor retired
-  show (  sort-by [ [a b] -> item 0 a < item 0 b ] [ list who cached-oc-embeddedness ] of  persons) 
-  show (  sort-by [ [a b] -> item 0 a < item 0 b ] [ list who oc-member? ] of  persons) 
-  show (  sort-by [ [a b] -> item 0 a < item 0 b ] [ list who [ num-co-offenses ] of my-criminal-links ] of  persons) 
-  ask  meta-links [show  dist]
+  repeat 5 [  commit-crimes-OC-only show "tick--------------"]
 end
 
 to get-co-offenses
   foreach sort-by [ [a b] -> item 0 a < item 0 b ] [ list who [ (list [who] of other-end num-co-offenses) ] of my-criminal-links ] of  persons [
     a -> 
     foreach item 1 a [ b ->
-      ask turtle item 0 a [ show (word "oc-emb: " cached-oc-embeddedness " -> agent " item 0 b " weight: " item 1 b) ]
+      ask turtle item 0 a [ show (word "co-offenses with agent " item 0 b ": " item 1 b) ]
       ] 
     ]
 end
@@ -81,6 +76,23 @@ to get-oc-embeddedness
   ]
 end
 
+to get-soc-prox
+  let the-list sort-couples [ (list [who] of both-ends show-soc-prom both-ends) ] of criminal-links 
+  show the-list
+  foreach the-list [
+    a ->
+    ask turtle item 0 item 0 a [ show (word "soc prox with agent " item 1 item 0 a ": " item 1 a) ]
+  ] 
+  
+end
+
+to-report show-soc-prom [ two-ends ]
+  report [ social-proximity-with other two-ends ] of one-of two-ends
+end
+
+to-report sort-couples [ a-nested-list ]; must be [ [a b] c d e f...]
+  report sort-by [ [a b] -> item 0 item 0 a * 1000 + item 1 item 0 a  < item 0 item 0 b * 1000 + item 1 item 0 b ] a-nested-list
+end
 
 ; to be used from the command line to get a dump
 to dump-all-person-networks
