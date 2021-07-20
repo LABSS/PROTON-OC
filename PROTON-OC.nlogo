@@ -786,7 +786,7 @@ to setup-siblings
   ask persons with [ any? get-offspring ] [ ; simulates people who left the original household.
     let num-siblings random-poisson 0.5 ;the number of links is N^3 agents, so let's keep this low
                                         ; at this stage links with other persons are only relatives inside households and friends.
-    let p [ t -> any? parents and not link-neighbor? myself and abs age - [ age ] of myself < 5 ]
+    let p [ t -> any? get-offspring and not link-neighbor? myself and abs age - [ age ] of myself < 5 ]
     let candidates up-to-n-of-other-with 50 p
     ; remove couples from candidates and their neighborhoods
     let all-potential-siblings [ -> (turtle-set self candidates sibling-link-neighbors [ sibling-link-neighbors ] of candidates)]
