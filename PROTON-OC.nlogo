@@ -783,8 +783,7 @@ to-report up-to-n-of-other-with [ n p ]
 end
 
 to setup-siblings
-  ; we are setting this to people who has parents.
-  ask persons with [ any? parents ] [ ; simulates people who left the original household.  ; is this a bug??
+  ask persons with [ any? get-offspring ] [ ; simulates people who left the original household.
     let num-siblings random-poisson 0.5 ;the number of links is N^3 agents, so let's keep this low
                                         ; at this stage links with other persons are only relatives inside households and friends.
     let p [ t -> any? parents and not link-neighbor? myself and abs age - [ age ] of myself < 5 ]
@@ -918,15 +917,15 @@ to make-baby
 end
 
 to init-baby ; person procedure
-  ; we stop counting after 2 because probability stays the same
+             ; we stop counting after 2 because probability stays the same
   set number-of-children number-of-children + 1
   set number-born number-born + 1
-  let brothers offspring-link-neighbors with [ not member? self [ parents ] of myself ]
+  let brothers-to-be get-offspring
   hatch-persons 1 [ ; myself being the mom
     set wealth-level [ wealth-level ] of myself
     set birth-tick ticks
     init-person-empty
-    create-sibling-links-with brothers
+    create-sibling-links-with brothers-to-be
     create-household-links-with (turtle-set myself [ household-link-neighbors ] of myself)
     let dad one-of [ partner-link-neighbors ] of myself
     set parents (turtle-set dad myself)
@@ -937,6 +936,10 @@ to init-baby ; person procedure
       set max-education-level [ max-education-level ] of myself
     ]
   ]
+end
+
+to-report get-offspring ; person procedure.
+  report offspring-link-neighbors with [ not member? self [ parents ] of myself ]
 end
 
 ; this deforms a little the initial setup
