@@ -11,7 +11,7 @@ breed [prisoners prisoner]
 undirected-link-breed [household-links    household-link]    ; person <--> person
 undirected-link-breed [partner-links      partner-link]      ; person <--> person
 undirected-link-breed [sibling-links      sibling-link]      ; person <--> person
-directed-link-breed   [offspring-links    offspring-link]    ; person <--> person
+undirected-link-breed [offspring-links    offspring-link]    ; person <--> person
 undirected-link-breed [friendship-links   friendship-link]   ; person <--> person
 undirected-link-breed [criminal-links     criminal-link]     ; person <--> person
 undirected-link-breed [professional-links professional-link] ; person <--> person
@@ -32,6 +32,7 @@ persons-own [
   oc-member?
   cached-oc-embeddedness ; only calculated (if needed) when the `oc-embeddedness` reporter is called
   partner                ; the person's significant other
+  parents
   retired?
   number-of-children
   facilitator?
@@ -60,8 +61,8 @@ prisoners-own [
   propensity
   oc-member?
   cached-oc-embeddedness
-  oc-embeddedness-fresh?
   partner                ; the person's significant other
+  parents
   retired?
   number-of-children
   facilitator?
@@ -497,7 +498,7 @@ to socialization-intervene
     soc-add-more-friends targets
   ]
   if social-support = "all" [ ; also give a job to the mothers
-    welfare-createjobs (turtle-set [ in-offspring-link-neighbors ] of targets) with [ not male? ]
+    welfare-createjobs (turtle-set [ parents ] of targets) with [ not male? ]
   ]
 end
 
@@ -542,7 +543,7 @@ to welfare-intervene
     if welfare-support = "job-child" [
       set targets all-persons with [ age > 16 and age < 24
         and not any? my-school-links
-        and any? in-offspring-link-neighbors with [ male? and oc-member? ]
+        and any? parents with [ male? and oc-member? ]
         and my-job = nobody ]
     ]
   ]
@@ -592,7 +593,7 @@ to family-intervene
     ]
   ]
   let kids-to-protect persons with [
-    age < 18 and age >= 12 and any? in-offspring-link-neighbors with [
+    age < 18 and age >= 12 and any? parents with [
       male? and oc-member? and runresult the-condition
     ]
   ]
@@ -601,9 +602,10 @@ to family-intervene
       set kids-intervention-counter kids-intervention-counter + 1
       ; notice that the intervention acts on ALL family members respecting the condition, causing double calls for families with double targets.
       ; gee but how comes that it increases with the nubmer of targets? We have to do better here
-      let father one-of in-offspring-link-neighbors with [ male? and oc-member? ]
+      let father one-of parents with [ male? and oc-member? ]
       ; this also removes household links, leaving the household in an incoherent state.
-      ask my-in-offspring-links with [ other-end = father ] [ die ]
+      ask my-offspring-links with [ other-end = father ] [ die ]
+      set parents parents with [ self != father ]
       set removed-fatherships fput (list ((18 * ticks-per-year + birth-tick) - ticks) father self) removed-fatherships
       ; at this point bad dad is out and we help the remaining with the whole package
       let family (turtle-set self family-link-neighbors)
@@ -627,7 +629,7 @@ to return-kids
     if any? turtle-set father [
       if [ age ] of last a >= 18 [
         if (random-float 1) < 6 / (first a) [
-          ask last a [ create-offspring-link-from father ]
+          ask last a [ create-offspring-link-with father set parents (turtle-set parents father) ]
           set removed-fatherships remove a removed-fatherships
         ]
       ]
@@ -781,10 +783,10 @@ to-report up-to-n-of-other-with [ n p ]
 end
 
 to setup-siblings
-  ask persons with [ any? out-offspring-link-neighbors ] [ ; simulates people who left the original household.
+  ask persons with [ any? get-offspring ] [ ; simulates people who left the original household.
     let num-siblings random-poisson 0.5 ;the number of links is N^3 agents, so let's keep this low
                                         ; at this stage links with other persons are only relatives inside households and friends.
-    let p [ t -> any? out-offspring-link-neighbors and not link-neighbor? myself and abs age - [ age ] of myself < 5 ]
+    let p [ t -> any? get-offspring and not link-neighbor? myself and abs age - [ age ] of myself < 5 ]
     let candidates up-to-n-of-other-with 50 p
     ; remove couples from candidates and their neighborhoods
     let all-potential-siblings [ -> (turtle-set self candidates sibling-link-neighbors [ sibling-link-neighbors ] of candidates)]
@@ -860,6 +862,7 @@ to init-person-empty ; person command
   set oc-member? false                                  ; the seed OC network are initialised separately
   set retired? false
   set partner nobody
+  set parents no-turtles
   set number-of-children 0
   set my-job nobody
   set facilitator? false
@@ -914,25 +917,29 @@ to make-baby
 end
 
 to init-baby ; person procedure
-  ; we stop counting after 2 because probability stays the same
+             ; we stop counting after 2 because probability stays the same
   set number-of-children number-of-children + 1
   set number-born number-born + 1
-  hatch-persons 1 [
+  let brothers-to-be get-offspring
+  hatch-persons 1 [ ; myself being the mom
     set wealth-level [ wealth-level ] of myself
     set birth-tick ticks
     init-person-empty
-    ask [ offspring-link-neighbors ] of myself [
-      create-sibling-links-with other [ offspring-link-neighbors ] of myself
-    ]
+    create-sibling-links-with brothers-to-be
     create-household-links-with (turtle-set myself [ household-link-neighbors ] of myself)
-    create-offspring-links-from (turtle-set myself [ partner-link-neighbors ] of myself)
-    let dad one-of in-offspring-link-neighbors with [ male? ]
-    set max-education-level ifelse-value (any? turtle-set dad) [
-      [ max-education-level ] of dad
-    ][
-      [ max-education-level ] of myself
+    let dad one-of [ partner-link-neighbors ] of myself
+    set parents (turtle-set dad myself)
+    ifelse dad != nobody [
+      create-offspring-link-with dad
+      set max-education-level [ max-education-level ] of dad
+    ] [
+      set max-education-level [ max-education-level ] of myself
     ]
   ]
+end
+
+to-report get-offspring ; person procedure.
+  report offspring-link-neighbors with [ not member? self [ parents ] of myself ]
 end
 
 ; this deforms a little the initial setup
@@ -1215,7 +1222,7 @@ to commit-crimes
       ask my-links with [ other-end = originator ] [
         increase-network-used
       ]
-      if any? in-offspring-link-neighbors with [ male? and oc-member? ] [
+      if any? parents with [ male? and oc-member? ] [
         set number-offspring-recruited-this-tick number-offspring-recruited-this-tick + 1
       ]
       if target-of-intervention [
@@ -1575,8 +1582,8 @@ to generate-households
             ask item 1 hh-members [ set partner item 0 hh-members ]
             let couple (turtle-set item 0 hh-members item 1 hh-members)
             let offspring turtle-set but-first but-first hh-members
-            ask couple [ create-offspring-links-to offspring ]
-            ask offspring [ create-sibling-links-with other offspring ]
+            ask couple [ create-offspring-links-with offspring ]
+            ask offspring [ create-sibling-links-with other offspring set parents couple ]
           ]
           set hh-members turtle-set hh-members
           ask hh-members [ create-household-links-with other hh-members set wealth-level family-wealth-level ]
